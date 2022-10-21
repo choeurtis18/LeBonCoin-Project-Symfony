@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\AnnonceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,9 +12,15 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index()
+    public function index(AnnonceRepository $annonceRepo)
     {
-        return $this->render("site/index.html.twig");
+      
+        $annonces= $annonceRepo -> findAll();
+
+        return $this->render('site/index.html.twig', [
+                  'annonces' => $annonces,
+                  'controller_name' => 'HomeController'
+        ]);
       }
 
 
