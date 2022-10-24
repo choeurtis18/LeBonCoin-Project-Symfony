@@ -109,4 +109,14 @@ class Annonce
 
         return $this;
     }
+
+    public function hydrate(array $donnees)
+    {
+        foreach($donnees as $cle =>$valeur) {
+            $method='set'.ucfirst($cle);
+            if(method_exists($this,$method)) {
+                return $this->$method($valeur);
+            }
+        }
+    }
 }
