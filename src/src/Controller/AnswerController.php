@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Question;
-use App\Entity\Annonce;
+use App\Entity\Answer;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,49 +13,50 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 
-class QuestionController extends AbstractController 
+class AnswerController extends AbstractController 
 {
     /**
-    * @Route("annonce/{id}/add_question", name="app_add_question")
+    * @Route("question/{id}/add_answer", name="app_add_answer")
     */ 
-    #[Route('annonce/{id}/add_question', name: 'app_add_question')]
-    public function add_question(Request $request, ValidatorInterface $validator, ManagerRegistry $doctrine, Annonce $id, User $idUser): Response
+    #[Route('question/{id}/add_answer', name: 'app_add_answer')]
+    public function add_answer(Request $request, ValidatorInterface $validator, ManagerRegistry $doctrine, Question $id, User $idUser): Response
     {
         $entityManager = $doctrine->getManager();
-        $annonce = $entityManager->getRepository(Annonce::class)->find($id);
+        $question = $entityManager->getRepository(Question::class)->find($id);
         $user = $entityManager->getRepository(User::class)->find($idUser);
 
-        $question = new Question();
-        $question->setQuestion('Who ?');
-        $question->setIdAnnonce($id);
-        $question->setIdUser($idUser);
+        $answer = new Answer();
+        $answer->setAnswer('Someone...');
+        $answer->setIdQuestion($id);
+        $answer->setIdUser($idUser);
 
-        $form = $this->createFormBuilder($question)
-        ->add('question', TextType::class)
+        $form = $this->createFormBuilder($answer)
+        ->add('answer', TextType::class)
         ->add('save', SubmitType::class, ['label' => 'Submit'])
         ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $question = $form->getData();
+            $answer = $form->getData();
 
             return $this->redirectToRoute('app_annonce_show_all');
         }
 
-        $entityManager->persist($question);
+        $entityManager->persist($answer);
         $entityManager->flush();
 
-        $errors = $validator->validate($question);
+        $errors = $validator->validate($answer);
         if (count($errors) > 0) {
             return new Response((string) $errors, 400);
         }
 
-        return $this->renderForm('site/add_question.html.twig', [
-            'form' => $form,
-        ]);
+        return $this->renderForm('site/add_answer.html.twig', [
+          'controller_name' => 'AnswerController',
+         ]);
     }
 }
 
