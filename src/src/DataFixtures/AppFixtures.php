@@ -126,6 +126,13 @@ class AppFixtures extends Fixture
         $Question1->setIdUser($Seller1);
         $manager->persist($Question1); 
 
+        //Answers
+        $Answer1 = new Answer();
+        $Answer1->setAnswer("Parce que...");
+        $Answer1->setIdQuestion($Question1);
+        $Answer1->setIdUser($Seller1);
+        $manager->persist($Answer1); 
+
 
         $manager->flush();
     }
