@@ -4,6 +4,8 @@ namespace App\DataFixtures;
 
 use DateTime;
 use App\Entity\Annonce;
+use App\Entity\Question;
+use App\Entity\Answer;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -115,6 +117,14 @@ class AppFixtures extends Fixture
         $Annonce4->setTag($Tag4);
         $Annonce4->setIdUser($Seller1);
         $manager->persist($Annonce4); 
+
+        
+        //Questions
+        $Question1 = new Question();
+        $Question1->setQuestion("Pourquoi ?");
+        $Question1->setIdAnnonce($Annonce2);
+        $Question1->setIdUser($Seller1);
+        $manager->persist($Question1); 
 
 
         $manager->flush();

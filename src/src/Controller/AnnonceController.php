@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use App\Entity\Tag;
+use App\Entity\Question;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +49,14 @@ class AnnonceController extends AbstractController
             );
         }
 
-        return $this->render('site/see_annonce.html.twig', ['annonce' => $annonce]);
+        $questions = $doctrine->getRepository(Question::class)->findAll();
+        if (!$questions) {
+            throw $this->createNotFoundException(
+                'No questions found for id '.$id
+            );
+        }
+
+        return $this->render('site/see_annonce.html.twig', ['annonce' => $annonce, 'questions' => $questions]);
 
         // or render a template
         // in the template, print things with {{ annonce.name }}
@@ -115,4 +123,5 @@ class AnnonceController extends AbstractController
 
         return $this->render('site/index.html.twig', ['annonces' => $annonces]);
     }
+    
 }
