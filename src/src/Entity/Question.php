@@ -24,6 +24,9 @@ class Question
     #[ORM\JoinColumn(nullable: false)]
     private ?User $IdUser = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Answer $IdAnswer = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,5 +66,27 @@ class Question
         $this->IdUser = $IdUser;
 
         return $this;
+    }
+
+    public function getIdAnswer(): ?Answer
+    {
+        return $this->IdAnswer;
+    }
+
+    public function setIdAnswer(?Answer $IdAnswer): self
+    {
+        $this->IdAnswer = $IdAnswer;
+
+        return $this;
+    }
+
+    public function hydrate(array $donnees)
+    {
+        foreach($donnees as $cle =>$valeur) {
+            $method='set'.ucfirst($cle);
+            if(method_exists($this,$method)) {
+                return $this->$method($valeur);
+            }
+        }
     }
 }

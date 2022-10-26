@@ -5,7 +5,21 @@
 
 
 {% block body %}
-
-<p>search_annonce</p>
-
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            {% include 'annonce/_filter.html.twig' with {form : form} only %} 
+        </div> 
+        <div class="col-md-9"> 
+            <div class="grid">
+            {% for annonce in annonces %} 
+                {% include 'annonce/_card.html.twig' with {annonce : annonce} only %} 
+            {% endfor %} 
+            </div>
+            {% if annonces|length <= 0 %} 
+                <p>pas d'offre trouvre</p>
+            {% endif %} 
+        </div>
+    </div>
+</div>
 {% endblock %}

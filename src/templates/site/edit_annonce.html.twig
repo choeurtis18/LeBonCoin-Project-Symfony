@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Update ANNOUNCE {% endblock %}
+
+
+
+{% block body %}
+{{ form_start(annonceForm) }}
+    {{ form_row(annonceForm.title, {
+        label: 'Article title'
+    }) }}
+    {{ form_row(annonceForm.price) }}
+    {{ form_row(annonceForm.description) }}
+    {{ form_row(annonceForm.date) }}
+    <button type="submit" class="btn btn-primary">Update!</button>
+{{ form_end(annonceForm) }}
+
+{% endblock %}

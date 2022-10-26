@@ -8,4 +8,26 @@
 
 <p>profil</p>
 
+{# <a  href="{{ path('app_user_delete') }}" /><button href="{{ path('app_user_delete') }}"> Supprimer compte </button></a> #}
+<div class="grid grid-cols-2 gap-4">
+  <div>Nom:</div>
+  <div>{{app.user.firstName}}</div>
+  <div>Prénom:</div>
+  <div>{{app.user.LastName}}</div>
+  <div>Email:</div>
+  <div>{{app.user.email}}</div>
+  <a class="btn btn-blue" href="{{ path('app_edit_pass')}}">
+  <div style="margin-left:300px;">modifier le mot de pass</div></a>
+</div>
+<div class="grid grid-cols-2 gap-4">
+    <h1> Annonces de {{app.user.firstName}} </h1>
+    
+  {% for annonce in app.user.annonces %}
+       <p>{{annonce.title}}</p>
+  {% endfor %}  
+  
+
+</div>
+
+
 {% endblock %}

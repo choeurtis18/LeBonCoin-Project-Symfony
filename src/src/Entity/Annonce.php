@@ -26,12 +26,12 @@ class Annonce
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $Date = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy:'annonces',targetEntity:User::class)]
     private ?User $IdUser = null;
 
     #[ORM\ManyToOne(inversedBy: 'IdAnnonce')]
     private ?Tag $tag = null;
+
 
     public function getId(): ?int
     {
@@ -119,4 +119,6 @@ class Annonce
             }
         }
     }
+
+ 
 }
