@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Annonce;
 use App\Entity\Photo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -42,17 +43,28 @@ class PhotoRepository extends ServiceEntityRepository
 //    /**
 //     * @return Photo[] Returns an array of Photo objects
 //     */
-//    public function findByExampleField($value): array
+//    public function findByImages($value): array
 //    {
 //        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
+//        ->innerJoin(Photo::class, 'p')
+//        ->where('p.IdAnnonce = ' .$value)
+//        ->getQuery()
+//        ->getResult()
 //        ;
 //    }
+
+/**
+    * @return Photo[] Returns an array of Question objects
+*/
+public function findByImages($value): array
+{
+    return $this->createQueryBuilder('p')
+     ->innerJoin(Annonce::class, 'a')
+     ->where('p.IdAnnonce = ' .$value)
+     ->getQuery()
+     ->getResult()
+    ;
+}
 
 //    public function findOneBySomeField($value): ?Photo
 //    {
