@@ -19,7 +19,7 @@
         {% endblock %}
     </head>
     <body>
-        <div>
+        
             <div class="absolute top-0 md:flex flex-col md:flex-row md:min-h-screen w-full ">
                 <div @click.away="open = false" class="flex flex-col w-full md:w-64 text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800 flex-shrink-0" x-data="{ open: false }">
                     <div class="flex-shrink-0 px-8 py-4 flex flex-row items-center justify-center">
@@ -40,15 +40,30 @@
                         <a class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{ path('app_add_annonce') }}">Ajouter offre</a>
 
                         <!-- Faire un foreach en fonction de l'etat Connecter/Pas connecter--> 
+                        {% if (is_granted('IS_AUTHENTICATED_REMEMBERED')) %}
                         <a class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{ path('app_profil') }}">Profil</a>
+                        <a class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{ path('app_logout') }}">Se déconnecter</a>
+                        {% endif %}
+                        {% if not(is_granted('IS_AUTHENTICATED_REMEMBERED')) %}
                         <a class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{ path('app_login') }}">Se connecter</a>
                         <a class="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{ path('app_register') }}">S'incrire</a>
+                        {% endif %}
                         <!-- Faire un foreach en fonction de l'etat Connecter/Pas connecter--> 
                     </nav>
                 </div>
             </div>
 
             <div class="absolute flex flex-col md:pl-64">
+            {% for message in app.flashes('error') %}
+            <div >
+                <div class="p-3 my-2 rounded-2 error">{{message}}</div>
+            </div>
+           {% endfor %}     
+           {% for message in app.flashes('message') %}
+            <div >
+                <div class="p-3 my-2 rounded-2 ">{{message}}</div>
+            </div>
+           {% endfor %}   
             
         {% block body %}
         
