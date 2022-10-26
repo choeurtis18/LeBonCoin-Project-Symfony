@@ -46,11 +46,6 @@ class AnnonceController extends AbstractController
         }
 
         $answers = $doctrine->getRepository(Answer::class)->findAll();
-        if (!$answers) {
-            throw $this->createNotFoundException(
-                'No questions found for id '.$id
-            );
-        }
 
         return $this->render('site/see_annonce.html.twig', ['annonce' => $annonce, 'questions' => $questions, 'answers' => $answers, 'userId' => $userId, 'images' => $images]);
 
