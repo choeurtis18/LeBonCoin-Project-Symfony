@@ -16,7 +16,7 @@ class Answer
     #[ORM\Column(length: 255)]
     private ?string $answer = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\OneToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Question $IdQuestion = null;
 

@@ -17,23 +17,22 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class QuestionController extends AbstractController 
 {
-    /**
-    * @Route("annonce/{id}/add_question", name="app_add_question")
-    */ 
+    
     #[Route('annonce/{id}/add_question', name: 'app_add_question')]
-    public function add_question(Request $request, ValidatorInterface $validator, ManagerRegistry $doctrine, Annonce $id, User $idUser): Response
+    public function add_question(Request $request, ValidatorInterface $validator, ManagerRegistry $doctrine, Annonce $id): Response
     {
         $entityManager = $doctrine->getManager();
         $annonce = $entityManager->getRepository(Annonce::class)->find($id);
-        $user = $entityManager->getRepository(User::class)->find($idUser);
+        
+        $currentUser = $this->getUser();
 
         $question = new Question();
-        $question->setQuestion('Who ?');
         $question->setIdAnnonce($id);
-        $question->setIdUser($idUser);
+        $question->setIdUser($currentUser);
+        
 
         $form = $this->createFormBuilder($question)
-        ->add('question', TextType::class)
+        ->add('question')
         ->add('save', SubmitType::class, ['label' => 'Submit'])
         ->getForm();
 
@@ -42,11 +41,13 @@ class QuestionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $question = $form->getData();
 
-            return $this->redirectToRoute('app_annonce_show_all');
-        }
+            $entityManager->persist($question);
+            $entityManager->flush();
 
-        $entityManager->persist($question);
-        $entityManager->flush();
+            return $this->redirectToRoute('app_annonce_show', [
+                'id' => $annonce->getId(),
+            ]);
+        }
 
         $errors = $validator->validate($question);
         if (count($errors) > 0) {
