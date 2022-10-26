@@ -6,6 +6,7 @@ use App\Entity\Annonce;
 use App\Entity\Tag;
 use App\Entity\Question;
 use App\Entity\Answer;
+use App\Entity\User;
 use App\Form\AnnonceFormType;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,11 +54,13 @@ class AnnonceController extends AbstractController
             );
         }
 
-        $questions = $doctrine->getRepository(Question::class)->findAll();
-        if (!$questions) {
-            throw $this->createNotFoundException(
-                'No questions found for id '.$id
-            );
+        $questions = $doctrine->getRepository(Question::class)->findById($id);
+        $currentUser = $this->getUser();
+        if($currentUser != null) {
+            $userId = $currentUser->getId();
+        }
+        else {
+            $userId = "";
         }
 
         $answers = $doctrine->getRepository(Answer::class)->findAll();
@@ -67,7 +70,7 @@ class AnnonceController extends AbstractController
             );
         }
 
-        return $this->render('site/see_annonce.html.twig', ['annonce' => $annonce, 'questions' => $questions, 'answers' => $answers]);
+        return $this->render('site/see_annonce.html.twig', ['annonce' => $annonce, 'questions' => $questions, 'answers' => $answers, 'userId' => $userId]);
 
         // or render a template
         // in the template, print things with {{ annonce.name }}
