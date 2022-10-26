@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\SearchData;
 use App\Entity\Annonce;
+use App\Entity\Photo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
@@ -47,6 +48,7 @@ class AnnonceRepository extends ServiceEntityRepository
         }
     }
 
+  
     /**
      * Récupère les produits en lien avec une recherche
      * @return PaginatorInterface
@@ -122,13 +124,4 @@ class AnnonceRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Annonce
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
