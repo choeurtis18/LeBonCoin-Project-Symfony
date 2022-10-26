@@ -12,7 +12,7 @@
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 		{{ annonce.title }}</h5>
 		<span class="text-sm text-gray-500 dark:text-gray-400">
-		by <span class="font-bold">{{ annonce.getIdUser().getFirstName }}</span>
+		by <span class="font-bold">{{ annonce.getIdUser().getFirstName() }}</span>
 		the <span class="font-bold">{{ annonce.getDate()|date('d-m-Y') }}</span>
 		</span>
     </a>
