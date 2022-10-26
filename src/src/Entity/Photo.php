@@ -16,7 +16,7 @@ class Photo
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade:["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Annonce $IdAnnonce = null;
 
@@ -41,7 +41,7 @@ class Photo
     {
         return $this->IdAnnonce;
     }
-
+  
     public function setIdAnnonce(?Annonce $IdAnnonce): self
     {
         $this->IdAnnonce = $IdAnnonce;
