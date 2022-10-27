@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Vote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @extends ServiceEntityRepository<Vote>
@@ -19,6 +20,29 @@ class VoteRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Vote::class);
+    }
+
+    private function userCanVote($userId): bool
+    {
+        if ($userId === null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function userHasAlreadyVoted($userId, $sellerId): bool
+    {
+        $vote = $this->findOneBy([
+            'IdUser' => $userId,
+            'idUserVote' => $sellerId,
+        ]);
+
+        if ($vote === null) {
+            return false;
+        }
+
+        return true;
     }
 
     public function save(Vote $entity, bool $flush = false): void
@@ -39,28 +63,33 @@ class VoteRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Vote[] Returns an array of Vote objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @param int $voteValue
+     * @param int|null $userId
+     * @param int|null $sellersId
+     *
+     * @throws Response
+     */
+    public function castVote(int $voteValue, $userId, $sellersId)
+    {
+        if (!$this->userCanVote($userId)) {
+            throw new Response('Vous ne pouvez pas voter pour ce vendeur car vous n\'êtes pas connecté');
+        }
+        else if($this->userHasAlreadyVoted($userId, $sellersId)) {
+            $vote = $this->findOneBy([
+                'IdUser' => $userId,
+                'idUserVote' => $sellersId,
+            ]);
 
-//    public function findOneBySomeField($value): ?Vote
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+            $this->remove($vote, true);
+        }
+        else {
+            $vote = new Vote();
+            $vote->setVote($voteValue);
+            $vote->setIdUser($userId);
+            $vote->setIdUserVote($sellersId);
+
+            $this->save($vote, true);
+        }
+    }
 }

@@ -14,26 +14,27 @@ class Vote
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?bool $vote = null;
+    private ?int $vote = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $IdUser = null;
 
-    #[ORM\Column]
-    private ?int $idUserVote = null;
+    #[ORM\ManyToOne(inversedBy: 'votes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $idUserVote = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function isVote(): ?bool
+    public function isVote(): ?int
     {
         return $this->vote;
     }
 
-    public function setVote(bool $vote): self
+    public function setVote(int $vote): self
     {
         $this->vote = $vote;
 
@@ -52,12 +53,12 @@ class Vote
         return $this;
     }
 
-    public function getIdUserVote(): ?int
+    public function getIdUserVote(): ?User
     {
         return $this->idUserVote;
     }
 
-    public function setIdUserVote(int $idUserVote): self
+    public function setIdUserVote(?User $idUserVote): self
     {
         $this->idUserVote = $idUserVote;
 

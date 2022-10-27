@@ -4,90 +4,28 @@ namespace App\Controller;
 
 use App\Controller\AddVote;
 use App\Entity\Annonce;
-use App\Entity\User;
-use App\Entity\Vote;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 
-class VoteControlller extends AbstractController
+class VoteController extends AbstractController
 {
-    /**
-     * @var AddVote
-     */
-    private $voteManager;
-
-    /**
-     * @var Annonce
-     */
-    private $seller;
-
-     /**
-     * @var User
-     */
-    private $user;
-
-    /**
-     * @var Vote
-     */
-    private $vote;
-
-    public function __construct (
-        Annonce $seller,
-        User $user,
-        AddVote $voteManager,
-        Vote $vote
-    ) {
-        $this->seller = $seller;
-        $this->user = $user;
-        $this->vote = $vote;
-        $this->voteManager = $voteManager;
-    }
-
      /**
      * @param int $userId
      * @param int $sellersId
      *
      * @return Response
      */
-    public function upvoteAction(
-        int $userId,
-        int $sellerId,
-    ) {
-        $userId = $this->user->getId();
-        $sellerId = $this->seller->getIdUser();
+    #[Route('/annonce/{id}/vote', name: 'app_vote_action', methods: ['GET'])]
+    public function vote_action(Annonce $annonceSeller, AddVote $voteManager) 
+    {
+        $userId = $this->getUser();
+        $sellerId = $annonceSeller->getIdUser();
 
-        return $this->voteManager->addVote($userId, $sellerId);
-    }
+        $voteManager->addVote($userId, $sellerId);
 
-     /**
-     * @param int $userId
-     * @param int $sellersId
-     *
-     * @return Response
-     */
-    public function downvoteAction(
-        int $userId,
-        int $sellerId,
-    ) {
-        $userId = $this->user->getId();
-        $sellerId = $this->seller->getIdUser();
-
-        return $this->voteManager->removeVote($userId, $sellerId);
-    }
-
-    public function renderVoteAction(
-        int $userId,
-        int $sellerId,
-    ) {
-        $userId = $this->user->getId();
-        $sellerId = $this->seller->getIdUser();
-
-        $vote = $this->vote->getVote($userId, $sellerId);
-
-        return $this->render('vote.html.twig', [
-            'vote' => $vote,
-        ]);
+        return $this->redirectToRoute('app_home');
     }
 
 }
