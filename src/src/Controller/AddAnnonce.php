@@ -100,6 +100,10 @@ class AddAnnonce extends AbstractController {
             }
             $entityManagerInterface->persist($annonce);
             $entityManagerInterface->flush();
+            
+            return $this->redirectToRoute('app_annonce_show', [
+                'id' => $annonce->getId(),
+            ]);
         }
 
         return $this->render('site/add_annonce.html.twig', [
