@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} search_annonce {% endblock %}
+{% block title %} Leboncoin - Rechercher une annonce {% endblock %}
 
 
 
 {% block body %}
 <div class="container">
-    <div class="row">
+    <div class="">
         <div class="col-md-3">
             {% include 'annonce/_filter.html.twig' with {form : form} only %} 
         </div> 
         <div class="col-md-9"> 
-            <div class="grid">
-            {% for annonce in annonces %} 
-                {% include 'annonce/_card.html.twig' with {annonce : annonce} only %} 
-            {% endfor %} 
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 w-full py-10">
+                {% for annonce in annonces %} 
+                    {% include 'annonce/_card.html.twig' with {annonce : annonce} only %} 
+                {% endfor %} 
             </div>
             {% if annonces|length <= 0 %} 
                 <p>pas d'offre trouvre</p>

@@ -51,7 +51,7 @@ class AnswerController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('app_annonce_show', [
-              'id' => $annonce->getId(),
+              'id' => $question->getIdAnnonce()->getId(),
           ]);
         }
 

@@ -5,51 +5,67 @@
 
 
 {% block body %}
-<div class="p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
-    <a href="#">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-		{{ annonce.title }}</h5>
-		<span class="text-sm text-gray-500 dark:text-gray-400">
-		by <span class="font-bold">{{ annonce.getIdUser().getFirstName }}</span>
-		the <span class="font-bold">{{ annonce.getDate()|date('d-m-Y') }}</span>
-		</span>
-    </a>
-    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-	{{ annonce.description }}</p>
-	<span
-        class="m-1 flex flex-wrap justify-between items-center text-xs sm:text-sm bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded px-4 py-2 font-bold leading-loose cursor-pointer dark:text-gray-300">
-        {{ annonce.getTag().getTag() }}
-    </span>
-    <div>
+<div class="p-6 bg-white shadow mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 gap-3 w-full">
         {% for image in images %}
-            <img class="m-3" src={{asset('/uploads/' ~ image)}}>
+            <img class="w-full lg:max-h-96 md:max-h-60 sm:max-h-24 max-h-96 object-cover object-center mb-10" src={{asset('/uploads/' ~ image)}}>
         {% endfor %}
     </div>
-    <a href="{{ path('app_annonce_delete', {'id':annonce.id}) }}" ><button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button></a>
-    <a href="{{ path('app_annonce_update', {'id':annonce.id}) }}" ><button type="button" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Update</button></a>
+    <h1 class="mb-2 text-3xl font-bold tracking-tight text-neutral-900 capitalize">
+    {{ annonce.title }}</h1>
+    <span
+        class="flex flex-wrap justify-between items-center text-xs sm:text-sm leading-loose cursor-pointer text-neutral-500 font-medium mb-2 w-fit">
+        {{ annonce.getTag().getTag() }}
+    </span>
+    <span class="text-sm text-gray-500 dark:text-gray-400">
+    by <span class="font-bold">{{ annonce.getIdUser().getFirstName }}</span>
+    the <span class="font-bold">{{ annonce.getDate()|date('d-m-Y') }}</span>
+    </span>
+    
+    <p class="mb-6 font-normal text-gray-500 dark:text-gray-40 text-md">{{ annonce.description }}</p>
+    {% if(annonce.getIdUser().getId() == userId) %}
+        <div class="mb-8">
+            <a href="{{ path('app_annonce_delete', {'id':annonce.id}) }}" ><button type="button" class="focus:outline-none text-neutral-500 hover:text-neutral-700 bg-gray-200 hover:bg-gray-300 font-medium rounded-md text-sm px-5 py-2.5 mb-2 mr-4">Delete</button></a>
+            <a href="{{ path('app_annonce_update', {'id':annonce.id}) }}" ><button type="button" class="focus:outline-none text-white bg-gray-700 hover:bg-gray-900 font-medium rounded-md text-sm px-5 py-2.5 mb-2">Update</button></a>
+        </div>
+    {% endif %}
 
-</div>
-<div>
-        {% for question in questions %}
-            <p>{{ question.question }}</p>
-            {% if(annonce.getIdUser().getId() == userId) %}
-                {% if not(question.getIdAnswer() is null) %}
-                    <p>{{ question.getIdAnswer().getAnswer() }}</p>
-                {% else %}
-                    <a href="{{ path('app_add_answer', {'id':question.id}) }}" ><button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Répondre</button></a>
-                {% endif %}
-            {% else %}
-            {% if not(question.getIdAnswer() is null) %}
-                    <p>{{ question.getIdAnswer().getAnswer() }}</p>
-                {% endif %}
+    <div >
+        <h2 class="font-bold text-xl mb-6 text-neutral-800">Questions posées par les utilisateurs</h2>
+            {% for question in questions %}
+                <div class="p-6 bg-neutral-100 shadow mb-4">
+                    <p class="text-sm mb-2">{{ question.getIdUser().getFirstName() }}</p>
+                    <div class="flex">
+                        <p class="mr-2 font-medium">Question :</p>
+                        <p>{{ question.question }}</p>
+                    </div>
+                    {% if(annonce.getIdUser().getId() == userId) %}
+                        {% if not(question.getIdAnswer() is null) %}
+                            <div class="flex">
+                                <p class="mr-2 font-medium">Réponse du vendeur :</p>
+                                <p>{{ question.getIdAnswer().getAnswer() }}</p>
+                            </div>
+                        {% else %}
+                            <a href="{{ path('app_add_answer', {'id':question.id}) }}" ><button type="button" class="focus:outline-none text-white bg-gray-700 hover:bg-gray-900 font-medium rounded-md text-sm px-5 py-2.5 mt-2">Répondre</button></a>
+                        {% endif %}
+                    {% else %}
+                        {% if not(question.getIdAnswer() is null) %}
+                            <div class="flex">
+                                <p class="mr-2 font-medium">Réponse du vendeur :</p>
+                                <p>{{ question.getIdAnswer().getAnswer() }}</p>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {% if not(annonce.getIdUser().getId() == userId or userId == null) %}
+                <div class="flex justify-center">
+                    <a href="{{ path('app_add_question', {'id':annonce.id}) }}" ><button type="button" class="focus:outline-none text-white bg-gray-700 hover:bg-gray-900 font-medium rounded-md text-sm px-5 py-2.5 mt-8">Poser une question</button></a>
+                </div>
             {% endif %}
-            <br>
-        {% endfor %}
-        <br> <br>
+    </div>
 </div>
 
-{% if not(annonce.getIdUser().getId() == userId or userId == null) %}
-    <a href="{{ path('app_add_question', {'id':annonce.id}) }}" ><button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Poser une question</button></a>
-{% endif %}
+
 
 {% endblock %}
