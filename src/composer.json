@@ -15,7 +15,7 @@
         "knplabs/knp-paginator-bundle": "^5.9",
         "sensio/framework-extra-bundle": "^6.2",
         "symfony/asset": "6.1.*",
-        "symfony/console": "6.1.*",
+        "symfony/console": "^6.1",
         "symfony/debug": "^4.4",
         "symfony/dotenv": "6.1.*",
         "symfony/flex": "^2",

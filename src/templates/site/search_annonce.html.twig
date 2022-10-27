@@ -11,7 +11,7 @@
             {% include 'annonce/_filter.html.twig' with {form : form} only %} 
         </div> 
         <div class="col-md-9"> 
-            <div class="grid">
+            <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-é xl:grid-cols-2 gap-6 w-full">
             {% for annonce in annonces %} 
                 {% include 'annonce/_card.html.twig' with {annonce : annonce} only %} 
             {% endfor %} 
