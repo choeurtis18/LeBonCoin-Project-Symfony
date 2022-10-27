@@ -5,7 +5,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
 
         {% block stylesheets %}
-            <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/icon type">
+            <link rel="icon" href="{{ asset('img/logo2.png') }}" type="image/icon type">
             <script src="https://cdn.tailwindcss.com"></script>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
@@ -18,7 +18,7 @@
             <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         {% endblock %}
     </head>
-    <body>
+    <body class="bg-stone-50">
         <div class="h-screen flex">
         <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
         <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
@@ -26,7 +26,7 @@
             <div class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
 
             <div class="fixed inset-0 z-40 flex">
-            <div class="relative flex w-full max-w-xs flex-1 flex-col bg-white focus:outline-none">
+                <div class="relative flex w-full max-w-xs flex-1 flex-col bg-white focus:outline-none">
                 <div class="absolute top-0 right-0 -mr-12 pt-2">
                 <button type="button" class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                     <span class="sr-only">Close sidebar</span>
@@ -38,7 +38,7 @@
 
                 <div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
                 <div class="flex flex-shrink-0 items-center px-4">
-                    <img class="h-8 w-auto" src="{{ asset('img/logo1.png') }}" alt="Your Company">
+                    <img class="h-8 w-auto" src="{{ asset('img/logo2.png') }}" alt="Your Company">
                 </div>
                 <nav aria-label="Sidebar" class="mt-5">
                     <div class="space-y-1 px-2">
@@ -120,8 +120,8 @@
             <div class="flex w-64 flex-col">
             <div class="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-gray-100">
                 <div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
-                <div class="flex flex-shrink-0 items-center px-4">
-                    <img class="" src="{{ asset('img/logo1.png') }}" alt="Your Company">
+                <div class="flex flex-shrink-0 items-center px-4 justify-center	">
+                    <img class="" src="{{ asset('img/logo2.png') }}" alt="Your Company">
                 </div>
                 <nav class="mt-5 flex-1" aria-label="Sidebar">
                     <div class="space-y-1 px-2">
@@ -211,7 +211,7 @@
             <div class="lg:hidden">
             <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-1.5">
                 <div>
-                <img class="h-8 w-auto" src="{{ asset('img/logo1.png') }}" alt="Your Company">
+                <img class="h-8 w-auto" src="{{ asset('img/logo2.png') }}" alt="Your Company">
                 </div>
                 <div>
                 <button type="button" class="-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-md text-gray-500 hover:text-gray-900">
@@ -225,7 +225,7 @@
             </div>
             <div class="relative h-full z-0 flex flex-1">
                 <main class="relative z-0 flex-1 overflow-y-auto focus:outline-none xl:order-last">
-                    <div class="absolute inset-0 py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="inset-0 py-6 px-4 sm:px-6 lg:px-8">
                         {% block body %}
                         
                         
