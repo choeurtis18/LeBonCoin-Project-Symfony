@@ -18,7 +18,7 @@ class Tag
     #[ORM\Column(length: 255)]
     private ?string $tag = null;
 
-    #[ORM\OneToMany(mappedBy: 'tag', targetEntity: Annonce::class)]
+    #[ORM\OneToMany(mappedBy: 'tag', targetEntity: Annonce::class, cascade:["persist"])]
     private Collection $IdAnnonce;
 
     public function __construct()

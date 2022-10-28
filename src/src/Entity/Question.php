@@ -16,11 +16,11 @@ class Question
     #[ORM\Column(length: 255)]
     private ?string $question = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade:["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Annonce $IdAnnonce = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade:["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $IdUser = null;
 
