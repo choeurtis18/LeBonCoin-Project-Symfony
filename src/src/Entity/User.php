@@ -40,12 +40,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isSeller = null;
 
-    #[ORM\OneToMany(mappedBy:'IdUser', targetEntity: Annonce::class)]
-    private Collection $annonces;
+    #[ORM\OneToMany(mappedBy: 'idUserVote', targetEntity: Vote::class, fetch: 'EAGER')]
+    private Collection $votes;
 
     public function __construct()
     {
-        
+        $this->votes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,33 +154,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getVoteScore(): int
+    {
+        return count($this->getVotes());
+    }
+
     /**
-     * @return Collection<int, annonce>
+     * @return Collection<int, Vote>
      */
-    public function getAnnonces(): Collection
+    public function getVotes(): Collection
     {
-        return $this->annonces;
-    }
-
-    public function addAnnonce(annonce $annonce): self
-    {
-        if (!$this->annonces->contains($annonce)) {
-            $this->annonces->add($annonce);
-            $annonce->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAnnonce(annonce $annonce): self
-    {
-        if ($this->annonces->removeElement($annonce)) {
-            // set the owning side to null (unless already changed)
-            if ($annonce->getUser() === $this) {
-                $annonce->setUser(null);
-            }
-        }
-
-        return $this;
+        return $this->votes;
     }
 }

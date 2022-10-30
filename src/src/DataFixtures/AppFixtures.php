@@ -8,6 +8,7 @@ use App\Entity\Question;
 use App\Entity\Answer;
 use App\Entity\Tag;
 use App\Entity\User;
+use App\Entity\Vote;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -121,6 +122,25 @@ class AppFixtures extends Fixture
         
       
 
+        // Votes
+        $vote1 = new Vote();
+        $vote1->setVote(1)
+        ->setIdUser($Seller1)
+        ->setIdUserVote($Seller2);
+
+        $vote2 = new Vote();
+        $vote2->setVote(1)
+        ->setIdUser($admin)
+        ->setIdUserVote($Seller2);
+
+        $vote3 = new Vote();
+        $vote3->setVote(1)
+        ->setIdUser($Seller1)
+        ->setIdUserVote($admin);
+
+        $manager->persist($vote1);
+        $manager->persist($vote2);
+        $manager->persist($vote3);
 
         $manager->flush();
     }
